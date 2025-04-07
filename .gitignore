@@ -1,0 +1,11 @@
+# Environment variables
+.env
+
+# Uploaded files
+uploads/
+
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
