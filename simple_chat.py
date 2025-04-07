@@ -9,6 +9,7 @@ import datetime
 import uuid
 from dotenv import load_dotenv
 import logging
+import shutil
 from PIL import Image
 from utils import resize_if_needed
 from collections import defaultdict
@@ -78,8 +79,8 @@ def add_message(history, message, request: gr.Request):
             unique_filename = f"{filename}_{uuid.uuid4()}{ext}"
             # Create the new file path
             new_file_path = os.path.join(upload_dir, unique_filename)
-            # Move the file to the new directory
-            os.rename(file_path, new_file_path)  # Rename (move) the file
+            # Move the file to the new directory using shutil.move for cross-device compatibility
+            shutil.move(file_path, new_file_path)
             history.append({"role": "user", "content": {"path": new_file_path}})
         except Exception as e:
             logger.exception(f"Error moving file: {e}")
