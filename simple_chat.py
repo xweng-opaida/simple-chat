@@ -8,6 +8,7 @@ import datetime
 import uuid
 from dotenv import load_dotenv
 import logging
+import shutil
 from PIL import Image
 from utils import resize_image
 from collections import defaultdict
@@ -110,8 +111,9 @@ def chat():
             upload_dir = os.path.join("uploads", current_date.strftime("%Y-%m-%d"))
             os.makedirs(upload_dir, exist_ok=True)
             new_file_path = os.path.join(upload_dir, unique_filename)
-            os.rename(file_path, new_file_path) # new_file_path gets assigned here
-            logger.info(f"Uploaded file: {new_file_path}")
+            # Move the file to the new directory using shutil.move for cross-device compatibility
+            shutil.move(file_path, new_file_path)
+            history.append({"role": "user", "content": {"path": new_file_path}})
         except Exception as e:
             logger.exception(f"Error moving file: {e}")
             return jsonify({"response": f"Error processing file upload."})
