@@ -7,7 +7,7 @@ This project is a simple chat application.
 1.  **Install dependencies:**
 
     ```bash
-    pip install gradio openai python-dotenv
+    pip install gradio openai python-dotenv pdf2image
     ```
 2.  **Configure Environment Variables:**
 

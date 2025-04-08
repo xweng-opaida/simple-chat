@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #main-container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        #image-container {
+            text-align: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            display: none; /* Initially hide the image container */
+            background-color: #f0f0f0;
+            flex: 0 0 auto; /* Add flex properties */
+            position: sticky; /* Make it stick to the top */
+            top: 0; /* Stick to the very top */
+            z-index: 1; /* Ensure it's above other content */
+        }
+
+        #divider {
+            height: 5px;
+            background-color: #ccc;
+            cursor: row-resize;
+            width: 100%;
+        }
+
+        #chat-window {
+            border: 1px solid #ccc;
+            overflow-y: scroll;
+            padding: 10px;
+            padding-bottom: 50px; /* Add padding to prevent overlap */
+            flex-grow: 1; /* Take up remaining space */
+        }
+
+        #uploaded-image {
+            max-width: 100%;
+            max-height: 150px;
+        }
+
+        #input-container {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            height: 40px; /* Set a fixed height */
+            position: fixed; /* Stick to the bottom */
+            bottom: 0;
+            left: 0; /* Ensure it spans the whole width */
+            right: 0;
+            width: 100%; /* Span the whole width */
+            background-color: white; /* Ensure background is visible */
+            box-sizing: border-box; /* Include padding in the width */
+        }
+
+        #message-input {
+            flex-grow: 1;
+            padding: 5px;
+            width: 100%; /* Span the whole width */
+        }
+
+        #camera-button {
+            padding: 5px 10px;
+            margin-left: 10px;
+        }
+
+        #camera-input {
+            display: none;
+        }
+
+        /* Media query for mobile devices */
+        @media (max-width: 600px) {
+            #chat-window {
+                height: 300px;
+            }
+            #input-container {
+                flex-direction: row; /* Keep input and button in a row */
+                align-items: center; /* Vertically align items */
+            }
+            #message-input {
+                flex-grow: 1; /* Take remaining space */
+                width: auto; /* Reset width */
+                margin-bottom: 0; /* Reset margin */
+            }
+            #camera-button {
+                width: auto; /* Reset width */
+                margin-left: 10px; /* Restore margin */
+            }
+        }
+
+        /* Added styles for chat messages */
+        .user-message {
+            text-align: right;
+            margin: 5px 10px 5px 50px; /* Top, Right, Bottom, Left */
+            padding: 8px 12px;
+            background-color: #dcf8c6; /* Light green background */
+            border-radius: 10px;
+            display: inline-block; /* Fit content width */
+            max-width: 70%; /* Prevent overly wide messages */
+            float: right; /* Align bubble to the right */
+            clear: both; /* Ensure messages don't overlap horizontally */
+        }
+
+        .bot-message {
+            text-align: left;
+            margin: 5px 50px 5px 10px; /* Top, Right, Bottom, Left */
+            padding: 8px 12px;
+            background-color: #f1f0f0; /* Light grey background */
+            border-radius: 10px;
+            display: inline-block; /* Fit content width */
+            max-width: 70%; /* Prevent overly wide messages */
+            float: left; /* Align bubble to the left */
+            clear: both; /* Ensure messages don't overlap horizontally */
+        }
+
+         /* Clear floats after each message to ensure proper layout */
+        .user-message + .bot-message,
+        .bot-message + .user-message,
+        .user-message + .user-message,
+        .bot-message + .bot-message {
+            margin-top: 10px;
+        }
+
+        /* Ensure images within messages are constrained */
+        .user-message img, .bot-message img {
+             max-width: 100%; /* Ensure image doesn't overflow bubble */
+             display: block; /* Make image block level within its container */
+             margin-top: 5px; /* Add space above image if there's text */
+        }
+
+    </style>
+</head>
+<body>
+    <div id="main-container">
+        <div id="image-container">
+            <img id="uploaded-image" src="" alt="Uploaded Image">
+        </div>
+
+        <div id="divider"></div>
+
+        <div id="chat-window"></div>
+    </div>
+
+    <div id="input-container">
+        <input type="file" id="upload-input" style="display: none;" accept="image/*">
+        <button id="upload-button" style="margin-right: 10px;">🖼️</button> <!-- Added Upload Button -->
+        <input type="text" id="message-input">
+        <input type="file" accept="image/*" capture="environment" id="camera-input">
+        <button id="camera-button">📷</button>
+    </div>
+    <input type="hidden" id="camera-data">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
