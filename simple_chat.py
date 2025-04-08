@@ -113,7 +113,8 @@ def chat():
             new_file_path = os.path.join(upload_dir, unique_filename)
             # Move the file to the new directory using shutil.move for cross-device compatibility
             shutil.move(file_path, new_file_path)
-            history.append({"role": "user", "content": {"path": new_file_path}})
+            # Format the file path into a string message for the history
+            history.append({"role": "user", "content": f"User uploaded file: {new_file_path}"})
         except Exception as e:
             logger.exception(f"Error moving file: {e}")
             return jsonify({"response": f"Error processing file upload."})

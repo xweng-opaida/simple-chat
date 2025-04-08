@@ -182,7 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             messageInput.value = '';
-            cameraData.value = '';
             // Keep the image displayed in the top container after sending
             // uploadedImage.src = ""; // Clear the image after sending
             // imageContainer.style.display = "none"; // Hide the image container
