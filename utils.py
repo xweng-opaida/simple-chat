@@ -4,45 +4,23 @@ from pdf2image import convert_from_bytes
 import io
 
 
-max_width = 1400
-max_height = 2000
-top_width = 4000
-top_height = 4000
+max1_width = 1400
+max1_height = 2000
+max2_width = 4000
+max2_height = 4000
+max3_width = 8000
+max3_height = 8000
 min_width = 500
 min_height = 600
-
-def resize_if_needed(img):
-    width, height = img.size
-    if width > max_width or height > max_height:
-        logging.info(f"Resizing large image: {width}x{height}")
-        aspect_ratio = width / height
-        if (width / max_width) > (height / max_height):
-            new_width = max_width
-            new_height = int(max_width / aspect_ratio)
-        else:
-            new_height = max_height
-            new_width = int(max_height * aspect_ratio)
-        img = img.resize((new_width, new_height), Image.LANCZOS)
-    elif width < min_width or height < min_height:
-        logging.info(f"Upscaling small image: {width}x{height}")
-        aspect_ratio = width / height
-        if (width / min_width) < (height / min_height):
-            new_width = min_width
-            new_height = int(min_width / aspect_ratio)
-        else:
-            new_height = min_height
-            new_width = int(min_height * aspect_ratio)
-        img = img.resize((new_width, new_height), Image.LANCZOS)
-    return img
-
-
 def resize_image(image):
     width, height = image.size  # get the first frame's width and height
     image_bytes = io.BytesIO()
     image.save(image_bytes, format="PNG")
-    if width > top_width or height > top_height:  # if tiff is super large, convert it to much smaller pdf
+    if width > max3_width or height > max3_height:  # if tiff is super large, convert it to much smaller pdf
+        pdf_bytes = image_to_pdf_bytes(image_bytes, resolution=700.0)  # make it a lot smaller size
+    elif width > max2_width or height > max2_height:  # if tiff is super large, convert it to much smaller pdf
         pdf_bytes = image_to_pdf_bytes(image_bytes, resolution=500.0)  # make it a lot smaller size
-    elif width > max_width or height > max_height:  # if tiff is too large, convert it to small pdf
+    elif width > max1_width or height > max1_height:  # if tiff is too large, convert it to small pdf
         pdf_bytes = image_to_pdf_bytes(image_bytes, resolution=300.0)  # make it smaller size
     elif width < min_width or height < min_height:  # if tiff is too small, convert it to larger pdf
         pdf_bytes = image_to_pdf_bytes(image_bytes, resolution=100.0)  # make it larger size
