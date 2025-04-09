@@ -20,17 +20,33 @@ uploadedImage.onload = () => {
 };
 
 // Function to animate typing effect
-function typeWriter(element, text, speed = 5) {
+function typeWriter(element, text, speed = 1) {
     let i = 0;
-    element.textContent = ''; // Clear initial text
-    function type() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
+    element.innerHTML = ''; // Clear initial text
+    const lines = text.split('\n');
+
+    function typeLine(lineIndex) {
+        if (lineIndex < lines.length) {
+            const line = lines[lineIndex];
+            let charIndex = 0;
+            const lineElement = document.createElement('span');
+            element.appendChild(lineElement);
+
+            function typeChar() {
+                if (charIndex < line.length) {
+                    lineElement.textContent += line.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeChar, speed);
+                } else {
+                    const br = document.createElement('br');
+                    element.appendChild(br);
+                    typeLine(lineIndex + 1);
+                }
+            }
+            typeChar();
         }
     }
-    type();
+    typeLine(0);
 }
 
 // Updated displayMessage to handle potential images for user messages
@@ -66,7 +82,7 @@ function displayMessage(sender, message, imageData = null) {
         // Append image HTML after text HTML
         // We need to append the image element itself, not its HTML string yet
          messageElement.innerHTML = contentHTML; // Set text first
-         messageElement.appendChild(imgElement); // Then append the image element
+         // messageElement.appendChild(imgElement); // Then append the image element
     } else {
          messageElement.innerHTML = contentHTML; // Just set the text if no image
     }
@@ -101,8 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Animate the initial bot message
     if (initialBotMessageElement) {
-        const initialText = initialBotMessageElement.textContent;
+        const initialText = initialBotMessageElement.textContent.replace(/<br\s*[\/]?>/gi, '\n');
+        initialBotMessageElement.classList.add('hidden'); // Hide initially
         typeWriter(initialBotMessageElement, initialText);
+        setTimeout(() => {
+            initialBotMessageElement.classList.remove('hidden'); // Show after a delay
+        }, 100); // Adjust delay as needed
     }
 
     messageInput.addEventListener('keydown', (event) => {
@@ -145,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 imageContainer.style.display = "block";
                 currentUploadCount++; // Increment count when image is selected
                 console.log(`Upload count incremented to: ${currentUploadCount}`);
+                messageInput.value = "Tell me about the picture"; // Set the message
                 sendMessage(); // Automatically send the message with the uploaded image
             };
             reader.readAsDataURL(file);
@@ -164,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 imageContainer.style.display = "block"; // Show the image container
                 currentUploadCount++; // Increment count when image is selected
                 console.log(`Upload count incremented to: ${currentUploadCount}`);
+                messageInput.value = "Tell me about the picture"; // Set the message
                 sendMessage();
 
             };

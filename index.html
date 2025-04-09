@@ -163,6 +163,10 @@
             background-color:rgb(154, 154, 154); /* Darker red on hover */
         }
 
+        .hidden {
+            opacity: 0;
+        }
+
     </style>
 </head>
 <body>
@@ -175,7 +179,11 @@
         <div id="divider"></div>
 
         <div id="chat-window">
-            <div class="bot-message" id="initial-bot-message">Got a document? Just snap a pic and ask away — opAIda's here to help!</div>
+            <div class="bot-message hidden" id="initial-bot-message">  Got a document? Just snap a photo and ask your question!<br><br>
+                Tap the 📷 button at the bottom right to open your camera.<br><br>
+                Tap the 🖼️ button to upload an existing image.<br><br>
+                Tap the 🗑️ at the top right to clear the chat.<br><br>
+                Use Enter or Return on your keyboard to send your message.</div>
         </div>
     </div>
 
